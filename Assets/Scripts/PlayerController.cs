@@ -42,4 +42,8 @@ public class PlayerController : MonoBehaviour
         velocity = 0f;
     }
 
+    public float getVelocity() {
+        return velocity;
+    }
+
 }

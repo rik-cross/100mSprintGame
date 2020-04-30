@@ -17,6 +17,9 @@ public class GameplayManager : MonoBehaviour
     public GameObject playScreen;
     public GameObject gameOverScreen;
 
+    public GameObject cloud;
+    public GameObject cloud2;
+
     public Text distanceText;
     public Text timeText;
     public Text finalRaceTimeText;
@@ -99,6 +102,14 @@ public class GameplayManager : MonoBehaviour
                 finishLine.transform.position = new Vector3( (100 * scale) - (distance * scale) , finishLine.transform.position.y, finishLine.transform.position.z);
                 finalRaceTimeText.text = timer.ToString("F2") + "s";
                 break;
+        }
+        cloud.transform.position = new Vector3( cloud.transform.position.x - 0.002f - (sprinter.GetComponent<PlayerController>().getVelocity() * 0.1f ) , cloud.transform.position.y, cloud.transform.position.z);
+        if (cloud.transform.position.x < -5) {
+            cloud.transform.position = new Vector3( 5, cloud.transform.position.y, cloud.transform.position.z);
+        }
+        cloud2.transform.position = new Vector3( cloud2.transform.position.x - 0.002f - (sprinter.GetComponent<PlayerController>().getVelocity() * 0.1f ) , cloud2.transform.position.y, cloud2.transform.position.z);
+        if (cloud2.transform.position.x < -5) {
+            cloud2.transform.position = new Vector3( 5, cloud2.transform.position.y, cloud2.transform.position.z);
         }
 
     }
