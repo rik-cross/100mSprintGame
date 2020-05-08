@@ -22,6 +22,7 @@ public class GameplayManager : MonoBehaviour
 
     public Text distanceText;
     public Text timeText;
+    public Text bestTimeText;
     public Text finalRaceTimeText;
 
     private float scale = 0.3f;
@@ -46,6 +47,12 @@ public class GameplayManager : MonoBehaviour
                 countdownScreen.SetActive(true);
                 playScreen.SetActive(true);
                 gameOverScreen.SetActive(false);
+                if ( PlayerPrefs.HasKey("fastestTime") ) {
+                	bestTimeText.enabled = true;
+                	bestTimeText.text = PlayerPrefs.GetFloat("fastestTime").ToString("F2") + "s";
+                } else {
+                	bestTimeText.enabled = false;
+                }
                 break;
             case 2:
                 startScreen.SetActive(false);
@@ -68,6 +75,7 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefs.DeleteAll();
         setGameState(0);
     }
 
@@ -92,6 +100,11 @@ public class GameplayManager : MonoBehaviour
                 timeText.text = timer.ToString("F2") + "s";
                 distanceText.text = Mathf.Min(100, distance).ToString("0") + "m";
                 if (distance > 100) {
+                
+                    if ( PlayerPrefs.HasKey("fastestTime") == false || timer < PlayerPrefs.GetFloat("fastestTime") ) {
+                        PlayerPrefs.SetFloat("fastestTime", timer);	
+                    }
+                
                     setGameState(3);
                 }
                 break;
