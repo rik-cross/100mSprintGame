@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviour
 {
 
     private GameplayManager gameplayManager;
-    private float distance;
-    private float velocity;
+    private float distance = 0.0f;
+    private float velocity = 0.0f;
     private float acceleration = 0.1f;
     private float deceleration = 0.008f;
 
