@@ -25,6 +25,7 @@ public class GameplayManager : MonoBehaviour
     public Text timeText;
     public Text bestTimeText;
     public Text finalRaceTimeText;
+    public Text recordText;
 
     private float scale = 0.3f;
     private float distance;
@@ -111,7 +112,10 @@ public class GameplayManager : MonoBehaviour
                 if (distance > 100) {
                 
                     if ( PlayerPrefs.HasKey("fastestTime") == false || timer < PlayerPrefs.GetFloat("fastestTime") ) {
-                        PlayerPrefs.SetFloat("fastestTime", timer);	
+                        PlayerPrefs.SetFloat("fastestTime", timer);
+                        recordText.enabled = true;
+                    } else {
+                    	recordText.enabled = false;
                     }
                 
                     setGameState(3);
@@ -161,6 +165,7 @@ public class GameplayManager : MonoBehaviour
         m50.transform.position = new Vector3( 5 , m50.transform.position.y, m50.transform.position.z);
         m75.transform.position = new Vector3( 5 , m75.transform.position.y, m75.transform.position.z);
         finishLine.transform.position = new Vector3( 5 , finishLine.transform.position.y, finishLine.transform.position.z);
+        ghostSprinter.transform.position = new Vector3( 5 , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
         ghostSprinter.GetComponent<GhostPlayerController>().setAnimate(false);
     }
 
