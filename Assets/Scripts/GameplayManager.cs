@@ -32,8 +32,6 @@ public class GameplayManager : MonoBehaviour
     private float ghostDistance;
     private float timer;
     
-    public AudioSource beep;
-    public AudioSource boop;
     public AudioSource clap;
     
     
