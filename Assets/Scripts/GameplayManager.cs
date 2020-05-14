@@ -31,6 +31,7 @@ public class GameplayManager : MonoBehaviour
     private float distance;
     private float ghostDistance;
     private float timer;
+    private float fastestTime = 0.0f;
     
     public AudioSource clap;
     
@@ -55,21 +56,25 @@ public class GameplayManager : MonoBehaviour
                 gameOverScreen.SetActive(false);
                 if ( PlayerPrefs.HasKey("fastestTime") ) {
                 	bestTimeText.enabled = true;
-                	ghostSprinter.SetActive(true);
                 	bestTimeText.text = PlayerPrefs.GetFloat("fastestTime").ToString("F2") + "s";
                 } else {
                 	bestTimeText.enabled = false;
-                	ghostSprinter.SetActive(false);
                 }
                 break;
             case 2:
+                if ( PlayerPrefs.HasKey("fastestTime") ) {
+                	ghostSprinter.SetActive(true);
+                	fastestTime = PlayerPrefs.GetFloat("fastestTime");
+                } else {
+                	ghostSprinter.SetActive(false);
+                }
                 startScreen.SetActive(false);
                 countdownScreen.SetActive(false);
                 playScreen.SetActive(true);
                 gameOverScreen.SetActive(false);
-                ghostSprinter.GetComponent<GhostPlayerController>().setAnimate(true);
                 break;
             case 3:
+                ghostSprinter.SetActive(false);
                 startScreen.SetActive(false);
                 countdownScreen.SetActive(false);
                 playScreen.SetActive(false);
@@ -97,14 +102,11 @@ public class GameplayManager : MonoBehaviour
                 break;
             case 1:
                 sprinter.GetComponent<PlayerController>().reset();
-                ghostSprinter.GetComponent<GhostPlayerController>().reset();
+
                 break;
             case 2:
                 if (distance < 100) {
                     timer += Time.deltaTime;
-                }
-                if (PlayerPrefs.HasKey("fastestTime")) {
-                    ghostSprinter.transform.position = new Vector3( sprinter.transform.position.x + (((25 * scale) - ( (distance) * scale)) - ((25 * scale) - ( (ghostDistance) * scale))) , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
                 }
                 m25.transform.position = new Vector3( (25 * scale) - (distance * scale) , m25.transform.position.y, m25.transform.position.z);
                 m50.transform.position = new Vector3( (50 * scale) - (distance * scale) , m50.transform.position.y, m50.transform.position.z);
@@ -112,9 +114,13 @@ public class GameplayManager : MonoBehaviour
                 finishLine.transform.position = new Vector3( (100 * scale) - (distance * scale) , finishLine.transform.position.y, finishLine.transform.position.z);
                 timeText.text = timer.ToString("F2") + "s";
                 distanceText.text = Mathf.Min(100, distance).ToString("0") + "m";
+                if (PlayerPrefs.HasKey("fastestTime")) {
+                        ghostDistance = Mathf.Min(200, 100.0f / fastestTime * timer);
+                        Debug.Log(ghostDistance);
+                        ghostSprinter.transform.position = new Vector3( (ghostDistance * scale) - (distance * scale) , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
+                }
                 if (distance > 100) {
-                
-                    if ( PlayerPrefs.HasKey("fastestTime") == false || timer < PlayerPrefs.GetFloat("fastestTime") ) {
+                    if ( PlayerPrefs.HasKey("fastestTime") == false || timer < fastestTime ) {
                         PlayerPrefs.SetFloat("fastestTime", timer);
                         recordText.enabled = true;
                         clap.Play();
@@ -124,12 +130,8 @@ public class GameplayManager : MonoBehaviour
                 
                     setGameState(3);
                 }
-                Debug.Log(ghostDistance);
                 break;
             case 3:
-                if (PlayerPrefs.HasKey("fastestTime")) {
-                    ghostSprinter.transform.position = new Vector3( sprinter.transform.position.x + (((25 * scale) - ( (distance) * scale)) - ((25 * scale) - ( (ghostDistance) * scale))) , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
-                }
                 m25.transform.position = new Vector3( (25 * scale) - (distance * scale) , m25.transform.position.y, m25.transform.position.z);
                 m50.transform.position = new Vector3( (50 * scale) - (distance * scale) , m50.transform.position.y, m50.transform.position.z);
                 m75.transform.position = new Vector3( (75 * scale) - (distance * scale) , m75.transform.position.y, m75.transform.position.z);
@@ -170,9 +172,7 @@ public class GameplayManager : MonoBehaviour
         m75.transform.position = new Vector3( 5 , m75.transform.position.y, m75.transform.position.z);
         finishLine.transform.position = new Vector3( 5 , finishLine.transform.position.y, finishLine.transform.position.z);
         ghostSprinter.transform.position = new Vector3( 5 , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
-        ghostSprinter.GetComponent<GhostPlayerController>().setAnimate(false);
         sprinter.GetComponent<PlayerController>().setVelocity(0);
-        ghostSprinter.GetComponent<GhostPlayerController>().setVelocity(0);
         
     }
 
