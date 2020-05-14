@@ -32,6 +32,11 @@ public class GameplayManager : MonoBehaviour
     private float ghostDistance;
     private float timer;
     
+    public AudioSource beep;
+    public AudioSource boop;
+    public AudioSource clap;
+    
+    
     private int gameState;
 
     public void setGameState(int newState) {
@@ -114,6 +119,7 @@ public class GameplayManager : MonoBehaviour
                     if ( PlayerPrefs.HasKey("fastestTime") == false || timer < PlayerPrefs.GetFloat("fastestTime") ) {
                         PlayerPrefs.SetFloat("fastestTime", timer);
                         recordText.enabled = true;
+                        clap.Play();
                     } else {
                     	recordText.enabled = false;
                     }
