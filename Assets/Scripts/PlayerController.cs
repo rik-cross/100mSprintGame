@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
         distance = 0f;
     }
 
+    public void setVelocity(float v) {
+        velocity = v;
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && distance <= 100 && gameplayManager.getGameState() == 2) {

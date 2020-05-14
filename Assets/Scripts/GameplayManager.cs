@@ -171,6 +171,9 @@ public class GameplayManager : MonoBehaviour
         finishLine.transform.position = new Vector3( 5 , finishLine.transform.position.y, finishLine.transform.position.z);
         ghostSprinter.transform.position = new Vector3( 5 , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
         ghostSprinter.GetComponent<GhostPlayerController>().setAnimate(false);
+        sprinter.GetComponent<PlayerController>().setVelocity(0);
+        ghostSprinter.GetComponent<GhostPlayerController>().setVelocity(0);
+        
     }
 
 }

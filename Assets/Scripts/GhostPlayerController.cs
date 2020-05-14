@@ -30,6 +30,10 @@ public class GhostPlayerController : MonoBehaviour
         animate = a;
     }
 
+    public void setVelocity(float v) {
+        velocity = v;
+    }
+
     void Update()
     {
 
