@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class GameplayManager : MonoBehaviour
     
     public AudioSource clap;
     
+    private int adCount = -1;
+    
     
     private int gameState;
 
@@ -49,6 +52,13 @@ public class GameplayManager : MonoBehaviour
                 gameOverScreen.SetActive(false);
                 break;
             case 1:
+                adCount += 1;
+                if (adCount == 3 && Advertisement.IsReady()) {
+                    Advertisement.Show();
+                    adCount = 0;
+                    setGameState(0);
+                    return;
+                }
                 reset();
                 startScreen.SetActive(false);
                 countdownScreen.SetActive(true);
@@ -91,6 +101,8 @@ public class GameplayManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         setGameState(0);
+        // android
+        Advertisement.Initialize ("3607906", true);
     }
 
     // Update is called once per frame
@@ -172,7 +184,7 @@ public class GameplayManager : MonoBehaviour
         m75.transform.position = new Vector3( 5 , m75.transform.position.y, m75.transform.position.z);
         finishLine.transform.position = new Vector3( 5 , finishLine.transform.position.y, finishLine.transform.position.z);
         ghostSprinter.transform.position = new Vector3( 5 , ghostSprinter.transform.position.y, ghostSprinter.transform.position.z);
-        sprinter.GetComponent<PlayerController>().setVelocity(0);
+        sprinter.GetComponent<PlayerController>().reset();
         
     }
 

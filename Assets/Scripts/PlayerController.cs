@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     public void reset() {
         distance = 0f;
         velocity = 0f;
+        playerAnimation.SetFloat("velocity", 0);
+        playerAnimation.SetFloat("animationSpeed", 1.0f + velocity);
     }
 
     public float getVelocity() {
